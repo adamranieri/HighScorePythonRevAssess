@@ -35,21 +35,21 @@ def test_post_scores():
 
 
 #Example URI: GET  /scores/45
-@RevaTest(points=10, tier= 1)
+@RevaTest(points=10, tier= 2)
 def test_get_score_by_id():
     response = requests.get(f'http://localhost:5000/scores/{great_score["scoreId"]}')
     body = response.json()
     assert body == great_score
 
 #Example URI: GET  /scores
-@RevaTest(points=10, tier= 1)
+@RevaTest(points=10, tier= 2)
 def test_get_scores():
     response = requests.get(f'http://localhost:5000/scores')
     body = response.json()
     assert len(body) > 2
 
 #Example URI: PUT /scores/65
-@RevaTest(points=10, tier= 1)
+@RevaTest(points=10, tier= 3)
 def test_update_score():
     updated_score = great_score
     updated_score["points"] = 0
@@ -57,30 +57,9 @@ def test_update_score():
     response = requests.get(f'http://localhost:5000/scores/{great_score["scoreId"]}')
     body = response.json()
     assert body["points"] == 0
+                            
 #Example URI: DELETE /scores/54
-@RevaTest(points=10, tier= 1)
+@RevaTest(points=10, tier= 2)
 def test_delete_score_204():
     response = requests.delete(f'http://localhost:5000/scores/{great_score["scoreId"]}')
     assert response.status_code == 204
-
-@RevaTest(points=10, tier= 1)
-def test_delete_score_404():
-    response = requests.delete(f'http://localhost:5000/scores/{great_score["scoreId"]}')
-    assert response.status_code == 404
-
-#Example URI: GET /scores?ordered=descending
-@RevaTest(points=10, tier= 1)
-def test_scores_ordered_by_points_descending():
-    pass
-
-
-#Example URI: GET /scores?ordered=ascending
-@RevaTest(points=10, tier= 1)
-def test_scores_ordered_by_points_ascending():
-    pass
-
-#Example URI: GET /scores?initals=JTR
-@RevaTest(points=10, tier= 1)
-def test_scores_by_intials():
-    pass
-
