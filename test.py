@@ -1,8 +1,16 @@
-import requests
+from main import *
+from util import *
 
-from reva_util import RevaTest
+# run your flask server on the default port of 500 then run pytest test.py
+# if this test passes then it is working correctly
+@RevaTest(points=0, tier= 0)
+def test_hello():
+    response = requests.get('http://localhost:5000/hello')
+    assert response.text == 'hello'
 
-port = 5000
+
+
+
 great_score = {"scoreId" : 0, "initials" : 'JRR','points': 9999}
 medium_score = {"scoreId" : 0 ,"initials": 'MEH','points': 5000}
 bad_score = {"scoreId" : 0 ,"initials" : 'KIM' , 'points' : 1000}
@@ -76,7 +84,3 @@ def test_scores_ordered_by_points_ascending():
 def test_scores_by_intials():
     pass
 
-@RevaTest(points=10, tier= 1)
-def test_hello():
-    response = requests.get('http://localhost:5000/hello')
-    assert response.text == 'hello'

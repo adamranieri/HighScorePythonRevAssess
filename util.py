@@ -11,21 +11,19 @@ def RevaTest(points=0, tier=0):
         def inner_reva_test(*args, **kwargs):
             try:
                 result = func(*args, **kwargs)
-
+                
                 # Do logic to add to JSON if no exception is thrown
                 add_to_json(func.__name__, points=points, isSuccessful=True, errorMessage="SUCCESS", tier=tier)
-
+                
                 return result
-
+        
             except AssertionError as ae:
 
                 # Do Logic to add to JSON is exception is thrown
                 add_to_json(func.__name__, points=points, isSuccessful=False, errorMessage=str(ae), tier=tier)
 
                 raise
-
         return inner_reva_test
-
     return decorator_reva_test
 
 
@@ -35,11 +33,10 @@ def finish():
     start_json()
 
     yield
-
+    
     # End logic goes at the end of all sessions
     data = load_result()
     requests.put(data['config']['serverLocation'], json=data)
-
 
 def load_result():
     data = {}
@@ -52,9 +49,9 @@ def load_result():
 
     with open("main.zip", "rb") as f:
         main_bytes = f.read()
-
+    
     remove("main.zip")
-
+    
     base64_bytes = base64.b64encode(main_bytes)
     base64_main = base64_bytes.decode('ascii')
 
@@ -78,7 +75,7 @@ def add_to_json(testName, points, isSuccessful, errorMessage, tier):
     filename = "TestResults.json"
     with open(filename) as f:
         data = json.load(f)
-
+    
     temp = {}
     temp['testName'] = testName
     temp['points'] = points
@@ -91,7 +88,7 @@ def add_to_json(testName, points, isSuccessful, errorMessage, tier):
         if data[i]['testName'] == temp['testName']:
             index = i
             break
-
+    
     if index == -1:
         data.append(temp)
     else:
@@ -100,11 +97,10 @@ def add_to_json(testName, points, isSuccessful, errorMessage, tier):
     with open(filename, 'w') as outfile:
         json.dump(data, outfile)
 
-
 def zip():
     if path.exists("main.zip"):
         remove("main.zip")
-
+    
     dest = copytree()
 
     shutil.make_archive("main", 'zip', dest)
@@ -113,7 +109,8 @@ def zip():
 
 
 def copytree():
-    src = "tests"
+
+    src = "."
     dst = "to_zip"
 
     mkdir(dst)
@@ -128,6 +125,6 @@ def copytree():
         if path.isdir(s):
             shutil.copytree(s, d, True)
         else:
-            shutil.copy2(s, d)
-
+            shutil.copy2(s, d) 
+    
     return dst
