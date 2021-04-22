@@ -1,7 +1,7 @@
 from main import *
 from util import *
 
-# run your flask server on the default port of 500 then run pytest test.py
+# run your flask server on the default port of 5000 then run pytest test.py
 # if this test passes then it is working correctly
 @RevaTest(points=0, tier= 0)
 def test_hello():
